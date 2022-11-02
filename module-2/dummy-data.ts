@@ -1,3 +1,5 @@
+import { ParsedUrl } from "next/dist/shared/lib/router/utils/parse-url";
+import { ParsedUrlQuery } from "querystring";
 import { FilterDate } from "./types/dummy-data.types";
 
 export const DUMMY_EVENTS = [
@@ -54,6 +56,7 @@ export function getFilteredEvents(dateFilter: FilterDate) {
   return filteredEvents;
 }
 
-export function getEventById(id: string) {
-  return DUMMY_EVENTS.find((event) => event.id === id);
+export function getEventById(id: ParsedUrlQuery) {
+  const { eventId } = id;
+  return DUMMY_EVENTS.find((event) => event.id === eventId);
 }
