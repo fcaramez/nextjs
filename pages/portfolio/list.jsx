@@ -1,11 +1,11 @@
 import React from "react";
 
-const index = () => {
+const list = () => {
   return (
     <div>
-      <h1>The Home Page</h1>
+      <h1>The list Page</h1>
     </div>
   );
 };
 
-export default index;
+export default list;
