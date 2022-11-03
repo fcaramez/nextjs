@@ -7,10 +7,10 @@ const Button = ({
   link,
   children,
 }: {
-  link: string;
+  link?: string;
   children: React.ReactNode;
 }) => {
-  return (
+  return link ? (
     <Link
       className={styled.btn}
       href={{
@@ -19,6 +19,8 @@ const Button = ({
     >
       {children}
     </Link>
+  ) : (
+    <button className={styled.btn}>{children}</button>
   );
 };
 

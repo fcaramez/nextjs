@@ -20,7 +20,7 @@ const EventItem = ({ item }: { item: Event }) => {
 
   return (
     <li className={styled.item}>
-      <Image src={"/" + item.image} width="400" height="300" alt="event" />
+      <Image priority src={"/" + item.image} width="400" height="300" alt="event" />
       <div className={styled.content}>
         <div className={styled.summary}>
           <h2>{item.title}</h2>
