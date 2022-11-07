@@ -50,6 +50,16 @@ const FilteredEventsPage = () => {
     month: filterMonth,
   });
 
+  const pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${filterMonth}/${filterYear}`}
+      />
+    </Head>
+  );
+
   if (
     isNaN(filterYear) ||
     isNaN(filterMonth) ||
@@ -75,6 +85,7 @@ const FilteredEventsPage = () => {
   if (filteredEvents.length === 0) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p className="center">
             No events found, please ajust your filter query!
@@ -89,13 +100,7 @@ const FilteredEventsPage = () => {
 
   return (
     <Fragment>
-      <Head>
-        <title>Filtered Events</title>
-        <meta
-          name="description"
-          content={`All events for ${filterMonth}/${filterYear}`}
-        />
-      </Head>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </Fragment>
