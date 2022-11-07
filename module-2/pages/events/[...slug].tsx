@@ -1,15 +1,37 @@
 import { useRouter } from "next/router";
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import EventList from "../../components/events/event-list";
 import ResultsTitle from "../../components/events/results-title";
 import Button from "../../components/ui/button";
 import { getFilteredEvents } from "../../dummy-data";
 import ErrorAlert from "../../components/ui/error-alert";
+import useSWR from "swr";
+import { Event } from "../../types/dummy-data.types";
 
 const FilteredEventsPage = () => {
   const router = useRouter();
+  const [loadedEvents, setLoadedEvents] = useState<Array<Event>>();
 
   const filterData = router.query.slug;
+
+  const { data, error } = useSWR(
+    "https://nextjs-course-374d4-default-rtdb.europe-west1.firebasedatabase.app/events.json"
+  );
+
+  useEffect(() => {
+    if (data) {
+      const events = [];
+
+      for (const key in data) {
+        events.push({
+          id: key,
+          ...data[key],
+        });
+      }
+
+      setLoadedEvents(events);
+    }
+  }, [data]);
 
   if (!filterData) {
     return (
@@ -35,14 +57,16 @@ const FilteredEventsPage = () => {
     filterMonth < 1 ||
     filterMonth > 12
   ) {
-    <Fragment>
-      <ErrorAlert>
-        <p>Invalid filter, please adjust your values!</p>
-        <div className="center">
-          <Button link="/events">Show all events</Button>
-        </div>
-      </ErrorAlert>
-    </Fragment>;
+    return (
+      <Fragment>
+        <ErrorAlert>
+          <p>Invalid filter, please adjust your values!</p>
+          <div className="center">
+            <Button link="/events">Show all events</Button>
+          </div>
+        </ErrorAlert>
+      </Fragment>
+    );
   }
 
   const date = new Date(filterYear, filterMonth - 1);
