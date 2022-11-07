@@ -1,10 +1,9 @@
-import { useRouter } from "next/router";
 import React, { Fragment } from "react";
 import EventContent from "../../components/event-detail/even-content";
 import EventLogistics from "../../components/event-detail/event-logistics";
 import EventSummary from "../../components/event-detail/event-summary";
 import ErrorAlert from "../../components/ui/error-alert";
-import { getAllEvents, getEventById } from "../../helpers/api-util";
+import { getEventById, getFeaturedEvents } from "../../helpers/api-util";
 import { Event } from "../../types/dummy-data.types";
 
 const EventDetailPage = ({ event }: { event: Event }) => {
@@ -17,9 +16,9 @@ const EventDetailPage = ({ event }: { event: Event }) => {
       </EventContent>
     </Fragment>
   ) : (
-    <ErrorAlert>
-      <p className="center">No Event found!</p>
-    </ErrorAlert>
+    <div className="center">
+      <p>Loading...</p>
+    </div>
   );
 };
 
@@ -36,11 +35,12 @@ export const getStaticProps = async (context: Params) => {
     props: {
       event: event,
     },
+    revalidate: 30,
   };
 };
 
 export const getStaticPaths = async () => {
-  const allEvents = await getAllEvents();
+  const allEvents = await getFeaturedEvents();
 
   const paths = allEvents.map((event: Event) => ({
     params: { eventId: event.id },
@@ -48,7 +48,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths: paths,
-    fallback: false,
+    fallback: true,
   };
 };
 

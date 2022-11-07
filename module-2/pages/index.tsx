@@ -4,7 +4,6 @@ import EventList from "../components/events/event-list";
 import { Event } from "../types/dummy-data.types";
 
 const HomePage = ({ events }: { events: Array<Event> }) => {
-  // const featuredEvents = getFeaturedEvents();
   return (
     <div>
       <EventList items={events} />
@@ -20,5 +19,6 @@ export const getStaticProps = async () => {
     props: {
       events: featuredEvents,
     },
+    revalidate: 1800,
   };
 };

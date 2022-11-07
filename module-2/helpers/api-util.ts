@@ -8,7 +8,7 @@ export const getAllEvents = async (): Promise<Array<Event>> => {
   );
   const data = await response.json();
 
-  const events = [];
+  const events: Array<Event> = [];
 
   for (const key in data) {
     events.push({
@@ -16,7 +16,7 @@ export const getAllEvents = async (): Promise<Array<Event>> => {
       ...data[key],
     });
   }
-
+  console.log(events);
   return events;
 };
 
@@ -27,7 +27,7 @@ export const getFeaturedEvents = async (): Promise<Array<Event>> => {
 
 export const getEventById = async (id: Params) => {
   const { eventId } = id.params;
-  
+
   const allEvents = await getAllEvents();
 
   const filter = allEvents.find((event) => event.id === eventId);

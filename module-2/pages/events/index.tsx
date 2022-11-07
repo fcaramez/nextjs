@@ -1,12 +1,11 @@
 import React from "react";
 import EventList from "../../components/events/event-list";
-import { getAllEvents, getFilteredEvents } from "../../dummy-data";
 import EventsSearch from "../../components/events/events-search";
 import { Event } from "../../types/dummy-data.types";
 import { useRouter } from "next/router";
+import { getAllEvents } from "../../helpers/api-util";
 
-const EventsPage = () => {
-  const events = getAllEvents();
+const EventsPage = ({ events }: { events: Array<Event> }) => {
   const router = useRouter();
 
   const findEventsHandler = (year: string, month: string) => {
@@ -20,6 +19,17 @@ const EventsPage = () => {
       <EventList items={events} />
     </div>
   );
+};
+
+export const getStaticProps = async () => {
+  const events = await getAllEvents();
+
+  return {
+    props: {
+      events: events,
+    },
+    revalidate: 60,
+  };
 };
 
 export default EventsPage;
