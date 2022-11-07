@@ -47,8 +47,3 @@ export function getFilteredEvents(dateFilter: FilterDate) {
 
   return filteredEvents;
 }
-
-export function getEventById(id: ParsedUrlQuery) {
-  const { eventId } = id;
-  return DUMMY_EVENTS.find((event) => event.id === eventId);
-}
