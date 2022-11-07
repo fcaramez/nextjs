@@ -23,7 +23,7 @@ const EventItem = ({ item }: { item: Event }) => {
       <Image
         priority
         src={"/" + item.image}
-        width={340}
+        width={250}
         height={160}
         alt={item.title}
       />
