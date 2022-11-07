@@ -7,6 +7,7 @@ import { getFilteredEvents } from "../../dummy-data";
 import ErrorAlert from "../../components/ui/error-alert";
 import useSWR from "swr";
 import { Event } from "../../types/dummy-data.types";
+import Head from "next/head";
 
 const FilteredEventsPage = () => {
   const router = useRouter();
@@ -88,6 +89,13 @@ const FilteredEventsPage = () => {
 
   return (
     <Fragment>
+      <Head>
+        <title>Filtered Events</title>
+        <meta
+          name="description"
+          content={`All events for ${filterMonth}/${filterYear}`}
+        />
+      </Head>
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </Fragment>

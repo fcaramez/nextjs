@@ -16,7 +16,6 @@ export const getAllEvents = async (): Promise<Array<Event>> => {
       ...data[key],
     });
   }
-  console.log(events);
   return events;
 };
 

@@ -4,6 +4,7 @@ import EventsSearch from "../../components/events/events-search";
 import { Event } from "../../types/dummy-data.types";
 import { useRouter } from "next/router";
 import { getAllEvents } from "../../helpers/api-util";
+import Head from "next/head";
 
 const EventsPage = ({ events }: { events: Array<Event> }) => {
   const router = useRouter();
@@ -15,6 +16,10 @@ const EventsPage = ({ events }: { events: Array<Event> }) => {
 
   return (
     <div>
+      <Head>
+        <title>All Events</title>
+        <meta name="description" content="Find a lot of great events" />
+      </Head>
       <EventsSearch onSearch={findEventsHandler} />
       <EventList items={events} />
     </div>
