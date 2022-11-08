@@ -1,6 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import path from "path";
+import { Path } from "typescript";
+
+export const buildFeedbackPath = () => {
+  return path.join(process.cwd(), "data", "feedback.json");
+};
+
+export const extractFeedback = (filePath: Path | string) => {
+  const fileData = fs.readFileSync(filePath);
+
+  const data = JSON.parse(fileData.toString());
+  return data;
+};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -9,14 +21,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const newFeedback = {
       id: new Date().toISOString(),
       email: email,
-      text: feedback,
+      feedback: feedback,
     };
 
-    const filePath = path.join(process.cwd(), "data", "feedback.json");
+    const filePath = buildFeedbackPath();
 
-    const fileData = fs.readFileSync(filePath);
-
-    const data = JSON.parse(fileData.toString());
+    const data = extractFeedback(filePath);
 
     data.push(newFeedback);
 
@@ -24,7 +34,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(data);
 
     res.status(201).json({ message: "Success!", feedback: newFeedback });
-  } else res.status(200).json({ message: "Hello world" });
+  } else {
+    const filePath = buildFeedbackPath();
+
+    const data = extractFeedback(filePath);
+
+    res.status(200).json({ message: "Success!", feedback: data });
+  }
 };
 
 export default handler;
