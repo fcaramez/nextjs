@@ -1,15 +1,14 @@
 import axios from "axios";
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 export default function Home() {
-  const emailInput = useRef<HTMLInputElement>(null);
-  const feedbackInput = useRef<HTMLTextAreaElement>(null);
+  /* const emailInput = useRef<HTMLInputElement>(null);
+  const feedbackInput = useRef<HTMLTextAreaElement>(null); */
+  const [email, setEmail] = useState<string>();
+  const [feedback, setFeedback] = useState<string>();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    const email = emailInput.current?.value.toString();
-    const feedback = feedbackInput.current?.value.toString();
 
     const body = {
       email: email,
@@ -18,31 +17,19 @@ export default function Home() {
 
     console.log(body);
 
-    /* const options = {
-      method: "PSOT",
-      mode: "no-cors",
-      body: JSON.stringify(body),
-    }; */
-
-    axios
-      .post("http://localhost:3000/api/feedback", body)
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-
-    /* fetch("/api/feedback", {
+    await fetch("/api/feedback/", {
       method: "POST",
-      body: JSON.stringify(body),
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(body),
     })
       .then((res) => {
         res.json();
         console.log(res);
       })
       .then((data) => console.log(data))
-      .catch((err) => console.log(err)); */
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -51,11 +38,19 @@ export default function Home() {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Your email address</label>
-          <input type="email" id="email" ref={emailInput} />
+          <input
+            type="email"
+            id="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div>
           <label htmlFor="feedback">Your feedback</label>
-          <textarea id="feedback" rows={5} ref={feedbackInput}></textarea>
+          <textarea
+            id="feedback"
+            rows={5}
+            onChange={(e) => setFeedback(e.target.value)}
+          ></textarea>
         </div>
         <button>Send Feedback</button>
       </form>
